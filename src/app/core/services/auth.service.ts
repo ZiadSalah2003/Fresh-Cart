@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../environments/environment';
 import { jwtDecode } from 'jwt-decode';
-import { Router } from 'express';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -16,10 +16,10 @@ export class AuthService {
   userData:any=null;
 
   setRegisterForm(data: object):Observable<any>{
-    return this._httpClient.post(`${environment.baseUrl}/signup`, data) 
+    return this._httpClient.post(`${environment.baseUrl}/api/v1/auth/signup`, data) 
   }
   setLoginForm(data: object):Observable<any>{
-    return this._httpClient.post(`${environment.baseUrl}/login`, data) 
+    return this._httpClient.post(`${environment.baseUrl}/api/v1/auth/signin`, data) 
   }
   saveUserData():void{
     if(localStorage.getItem('userToken')!==null){

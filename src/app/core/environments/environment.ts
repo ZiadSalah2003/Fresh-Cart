@@ -1,3 +1,4 @@
 export const environment ={
-    baseUrl: 'https://api.freshcart.com',
+    production: true,
+    baseUrl: 'https://ecommerce.routemisr.com',
 }
