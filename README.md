@@ -9,12 +9,16 @@ A modern, responsive e-commerce application built with Angular 17, featuring a c
 - **Responsive Design** with Bootstrap 5
 - **Component-based Architecture** with reusable layouts
 - **Font Awesome Icons** for enhanced UI
-- **TypeScript** for type safety
-- **SCSS** for advanced styling
+- **TypeScript** for type safety and interfaces
+- **SCSS** for advanced styling with custom CSS variables
+- **JWT Authentication** with secure token management
+- **Route Guards** for authentication and authorization
 - **Authentication Layouts** for login/register flows
 - **Product Management** with categories and brands
 - **Shopping Cart** functionality
-- **Mobile-First Design**
+- **API Integration** with product and authentication services
+- **Mobile-First Design** with responsive layouts
+- **Environment Configuration** for development and production
 
 ## 📋 Prerequisites
 
@@ -64,6 +68,15 @@ npm start
 ng serve
 ```
 Navigate to `http://localhost:4200/` in your browser. The application will automatically reload when you make changes to the source files.
+
+### Available Scripts
+```bash
+npm start          # Start development server (ng serve --configuration development)
+npm run build      # Build for production
+npm run watch      # Build with watch mode for development
+npm test           # Run unit tests
+npm run ng         # Run Angular CLI commands
+```
 
 ### Development Server with Custom Port
 ```bash
@@ -133,6 +146,42 @@ ng e2e
 ```
 *Note: You need to add an e2e testing package first.*
 
+## 🏗️ Application Architecture
+
+### Services
+The application includes several core services:
+
+#### AuthService (`src/app/core/services/auth.service.ts`)
+- User registration and login
+- JWT token management
+- User data decoding and storage
+- Logout functionality
+- Route protection integration
+
+#### ProductsService (`src/app/core/services/products.service.ts`)
+- Fetch all products from API
+- Get specific product details
+- Product data management
+
+### Guards
+#### AuthGuard (`src/app/core/guards/auth.guard.ts`)
+- Protects routes requiring authentication
+- Redirects unauthenticated users to login
+
+#### LoggedGuard (`src/app/core/guards/loged.guard.ts`)
+- Prevents authenticated users from accessing auth pages
+- Redirects logged-in users to home page
+
+### Interfaces
+#### IProduct (`src/app/core/interface/iproduct.ts`)
+- TypeScript interface for product data structure
+- Ensures type safety for product-related operations
+
+### Routing Structure
+- **Auth Layout**: Login and registration pages
+- **Blank Layout**: Main application pages (home, products, cart, etc.)
+- **Route Guards**: Automatic redirection based on authentication status
+
 ## 📁 Project Structure
 
 ```
@@ -153,14 +202,21 @@ src/
 │   ├── layouts/            # Layout components
 │   │   ├── auth-layout/    # Layout for auth pages
 │   │   └── blank-layout/   # Layout for main pages
-│   ├── core/               # Core services and guards
+│   ├── core/               # Core services, guards, and interfaces
+│   │   ├── environments/   # Environment configurations
+│   │   ├── guards/         # Route guards (auth, logged)
+│   │   ├── interface/      # TypeScript interfaces
+│   │   └── services/       # Application services (auth, products)
 │   ├── app.component.*     # Root component
 │   ├── app.config.*        # Application configuration
 │   └── app.routes.ts       # Routing configuration
 ├── assets/                 # Static assets
-│   └── images/            # Application images
-├── styles.scss            # Global styles
-└── index.html             # Main HTML file
+│   └── images/            # Application images and icons
+├── styles.scss            # Global styles and CSS variables
+├── index.html             # Main HTML file
+├── main.ts                # Application entry point
+├── main.server.ts         # SSR entry point
+└── favicon.ico            # Application favicon
 ```
 
 ## 🛠️ Development Tools
@@ -189,34 +245,52 @@ The project uses EditorConfig for consistent code formatting across different ed
 ## 🎨 Styling
 
 The application uses:
-- **Bootstrap 5.3.7** for responsive design
-- **Font Awesome 6.7.2** for icons
-- **Custom SCSS** variables and mixins
-- **Google Fonts** (Encode Sans Expanded)
+- **Bootstrap 5.3.7** for responsive design and components
+- **Font Awesome 6.7.2** for consistent iconography
+- **Custom SCSS** variables and mixins for theming
+- **Google Fonts** (Encode Sans Expanded) for typography
 
 ### Custom CSS Variables
 ```scss
 :root {
-  --main-color: #0aad0a;
-  --light-color: #f0f3f2;
+  --main-color: #0aad0a;           /* Primary brand color */
+  --light-color: #f0f3f2;         /* Light background color */
+  --rating-color: #ffc908;        /* Star rating color */
+  --shadow: rgba(145, 158, 171, 0.2) 0px 2px 4px -1px,
+            rgba(145, 158, 171, 0.14) 0px 4px 5px 0px,
+            rgba(145, 158, 171, 0.12) 0px 1px 10px 0px;
+  --font-family: "Encode Sans Expanded", sans-serif;
 }
 ```
+
+### Component Styling Features
+- Hover effects on product cards
+- Smooth transitions and animations
+- Responsive grid layouts
+- Custom button styles with hover states
+- Active navigation link highlighting
 
 ## 📦 Dependencies
 
 ### Main Dependencies
-- `@angular/core`: ^17.3.0
-- `@angular/router`: ^17.3.0
-- `@angular/forms`: ^17.3.0
-- `bootstrap`: ^5.3.7
-- `@fortawesome/fontawesome-free`: ^6.7.2
-- `rxjs`: ~7.8.0
+- `@angular/core`: ^17.3.0 - Core Angular framework
+- `@angular/router`: ^17.3.0 - Angular routing
+- `@angular/forms`: ^17.3.0 - Angular reactive forms
+- `@angular/platform-server`: ^17.3.0 - Server-side rendering
+- `@angular/ssr`: ^17.3.17 - Angular SSR support
+- `bootstrap`: ^5.3.7 - CSS framework for responsive design
+- `@fortawesome/fontawesome-free`: ^6.7.2 - Icon library
+- `express`: ^4.18.2 - Node.js web framework for SSR
+- `jwt-decode`: ^4.0.0 - JWT token decoding
+- `rxjs`: ~7.8.0 - Reactive programming library
+- `zone.js`: ~0.14.3 - Execution context tracking
 
 ### Development Dependencies
-- `@angular/cli`: ^17.3.17
-- `typescript`: ~5.4.2
-- `karma`: ~6.4.0
-- `jasmine-core`: ~5.1.0
+- `@angular/cli`: ^17.3.17 - Angular command line interface
+- `@angular-devkit/build-angular`: ^17.3.17 - Angular build tools
+- `typescript`: ~5.4.2 - TypeScript compiler
+- `karma`: ~6.4.0 - Test runner
+- `jasmine-core`: ~5.1.0 - Testing framework
 
 ## 🚀 Deployment
 
@@ -238,13 +312,38 @@ ng deploy --base-href=/Fresh-Cart/
 ## 🔧 Configuration
 
 ### Environment Configuration
-- Development: `src/environments/environment.ts`
-- Production: `src/environments/environment.prod.ts`
+The application uses environment-specific configurations:
+
+- **Development**: `src/app/core/environments/environment.development.ts`
+- **Production**: `src/app/core/environments/environment.ts`
+
+#### Environment Variables
+```typescript
+export const environment = {
+  production: false, // true for production
+  baseUrl: 'https://ecommerce.routemisr.com'
+};
+```
 
 ### Angular Configuration
-- Main config: `angular.json`
-- TypeScript: `tsconfig.json`
-- Testing: `tsconfig.spec.json`
+- **Main config**: `angular.json` - Build and serve configurations
+- **TypeScript**: `tsconfig.json` - TypeScript compiler options
+- **Testing**: `tsconfig.spec.json` - Test-specific TypeScript config
+
+### API Integration
+The application integrates with a RESTful API for:
+- User authentication (signup/signin)
+- Product management
+- Categories and brands
+- Shopping cart functionality
+
+**Base URL**: `https://ecommerce.routemisr.com`
+
+### Authentication
+- JWT token-based authentication
+- Route guards for protected routes
+- Automatic token management in localStorage
+- Secure login/logout functionality
 
 ## 🤝 Contributing
 
@@ -253,6 +352,43 @@ ng deploy --base-href=/Fresh-Cart/
 3. Commit your changes: `git commit -am 'Add new feature'`
 4. Push to the branch: `git push origin feature/new-feature`
 5. Submit a pull request
+
+## 🔧 Troubleshooting
+
+### Common Issues
+
+#### Node.js Version
+Ensure you're using Node.js v18.18.0 or higher:
+```bash
+node --version
+```
+
+#### Angular CLI Version
+Make sure Angular CLI is installed globally:
+```bash
+npm install -g @angular/cli@17.3.17
+```
+
+#### Port Already in Use
+If port 4200 is already in use:
+```bash
+ng serve --port 4300
+```
+
+#### Build Errors
+Clear npm cache and reinstall dependencies:
+```bash
+npm cache clean --force
+rm -rf node_modules package-lock.json
+npm install
+```
+
+#### SSR Issues
+For server-side rendering problems, ensure all dependencies are installed:
+```bash
+npm install
+ng build --configuration production
+```
 
 ## 📄 License
 

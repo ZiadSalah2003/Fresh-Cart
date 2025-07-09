@@ -1,9 +1,10 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../core/services/auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NgClass } from '@angular/common';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-register',
@@ -12,13 +13,14 @@ import { Router } from '@angular/router';
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnDestroy {
   private readonly _authService = inject(AuthService);
   private readonly _formBuilder = inject(FormBuilder);
   private readonly _router = inject(Router);
   msError: string = "";
   isLoading: boolean = false;
   msSuccess: boolean = false;
+  registerSub!: Subscription;
 
   registerForm: FormGroup = this._formBuilder.group({
     name: [null, [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
@@ -40,7 +42,7 @@ export class RegisterComponent {
    {
     if(this.registerForm.valid){
       this.isLoading = true;
-      this._authService.setRegisterForm(this.registerForm.value).subscribe({
+      this.registerSub = this._authService.setRegisterForm(this.registerForm.value).subscribe({
         next: (response) => {
           console.log(response);
           if(response.message == "success"){
@@ -71,5 +73,8 @@ export class RegisterComponent {
 
     else
       return { mismatch: true };
+  }
+  ngOnDestroy(): void {
+    this.registerSub?.unsubscribe();
   }
 }
