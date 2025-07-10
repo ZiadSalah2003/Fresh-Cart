@@ -13,6 +13,8 @@ import { authGuard } from './core/guards/auth.guard';
 import { logedGuard } from './core/guards/loged.guard';
 import { DetailsComponent } from './components/detail/details.component';
 import { ForgetpasswordComponent } from './components/forget/forgetpassword/forgetpassword.component';
+import { AllordersComponent } from './components/allorders/allorders.component';
+import { OrdersComponent } from './components/orders/orders.component';
 
 export const routes: Routes = [
     {path:'', component:AuthLayoutComponent, canActivate: [logedGuard], 
@@ -33,7 +35,9 @@ export const routes: Routes = [
             { path: 'cart', component:CartComponent  },
             { path: 'brands', component:BrandsComponent  },
             { path: 'categories', component:CategoriesComponent  },
-            { path: 'details/:id', component:DetailsComponent  }
+            { path: 'details/:id', component:DetailsComponent  },
+            { path: 'allorders', component:AllordersComponent  },
+            { path: 'orders/:id', component:OrdersComponent  },
         ]
     },
     {path:'**', component:NotfoundComponent}

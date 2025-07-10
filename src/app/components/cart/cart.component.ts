@@ -2,11 +2,12 @@ import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { CartService } from '../../core/services/cart.service';
 import { ICart } from '../../core/interfaces/icart';
 import { CurrencyPipe } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [CurrencyPipe],
+  imports: [CurrencyPipe, RouterLink],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.scss'
 })
@@ -48,5 +49,16 @@ export class CartComponent implements OnInit {
         }
       });
     }
+  }
+  clearCart(): void {
+    this._cartService.clearCart().subscribe({
+      next: (response) => {
+        console.log('Cart cleared:', response);
+        this.cartDetails = {} as ICart;
+      },
+      error: (err) => {
+        console.error('Error clearing cart:', err);
+      }
+    });
   }
 }

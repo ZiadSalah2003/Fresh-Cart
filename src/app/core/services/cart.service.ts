@@ -36,4 +36,9 @@ export class CartService {
       { headers: this.myHeaders }
     );
   }
+  clearCart(): Observable<any> {
+    return this._httpClient.delete(`${environment.baseUrl}/api/v1/cart`, {
+      headers: this.myHeaders
+    });
+  }
 }
