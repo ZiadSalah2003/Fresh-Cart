@@ -12,6 +12,7 @@ import { SearchPipe } from '../../core/pipes/search.pipe';
 import { FormsModule } from '@angular/forms';
 import { CartService } from '../../core/services/cart.service';
 import { ToastrService } from 'ngx-toastr';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-home',
@@ -25,6 +26,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   customOptionsMain : OwlOptions = {
     loop: true,
     mouseDrag: true,
+    rtl: true,
     touchDrag: true,
     pullDrag: false,
     autoplay:true,
@@ -40,6 +42,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     loop: true,
     mouseDrag: true,
     touchDrag: true,
+    rtl: true,
     pullDrag: false,
     autoplay:true,
     autoplayTimeout: 3000,
@@ -69,6 +72,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   private readonly _categoriesService = inject(CategoriesService);
   private readonly _cartService = inject(CartService);
   private readonly _toastrService = inject(ToastrService);
+  private readonly _spinnerService = inject(NgxSpinnerService);
   searchTerm: string = '';
 
   productsList: IProduct[] = [];
@@ -77,10 +81,12 @@ export class HomeComponent implements OnInit, OnDestroy {
   getAllCategoriesSub!: Subscription;
 
   ngOnInit(): void {
+    this._spinnerService.show('loading-3');
     this.getAllCategoriesSub = this._categoriesService.getAllCategories().subscribe({
       next: (response) => {
         console.log(response.data);
         this.categoriesList = response.data;
+        this._spinnerService.hide('loading-3');
       },
       error: (err) => {
         console.log('Error fetching categories:', err);
