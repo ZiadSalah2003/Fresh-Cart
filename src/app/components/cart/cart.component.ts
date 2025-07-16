@@ -31,6 +31,7 @@ export class CartComponent implements OnInit {
       next: (response) => {
         console.log('Cart item deleted:', response);
         this.cartDetails = response.data;
+        this._cartService.cartNumber.set(response.numOfCartItems);
       },
       error: (err) => {
         console.error('Error deleting cart item:', err);
@@ -55,6 +56,7 @@ export class CartComponent implements OnInit {
       next: (response) => {
         console.log('Cart cleared:', response);
         this.cartDetails = {} as ICart;
+        this._cartService.cartNumber.set(0);
       },
       error: (err) => {
         console.error('Error clearing cart:', err);

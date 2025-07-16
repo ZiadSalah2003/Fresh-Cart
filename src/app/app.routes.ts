@@ -10,7 +10,7 @@ import { CartComponent } from './components/cart/cart.component';
 import { BrandsComponent } from './components/brands/brands.component';
 import { CategoriesComponent } from './components/categories/categories.component';
 import { authGuard } from './core/guards/auth.guard';
-import { logedGuard } from './core/guards/loged.guard';
+import { logedGuard } from './core/guards/loged.guard'; 
 import { DetailsComponent } from './components/detail/details.component';
 import { ForgetpasswordComponent } from './components/forget/forgetpassword/forgetpassword.component';
 import { AllordersComponent } from './components/allorders/allorders.component';
@@ -29,15 +29,15 @@ export const routes: Routes = [
         children:[
             { path: '', redirectTo: 'home', pathMatch: 'full' },
             { path: 'home', component:HomeComponent  },
-            { path: 'products', component:ProductComponent  },
-            { path: 'cart', component:CartComponent  },
-            { path: 'brands', component:BrandsComponent  },
-            { path: 'cart', component:CartComponent  },
-            { path: 'brands', component:BrandsComponent  },
-            { path: 'categories', component:CategoriesComponent  },
-            { path: 'details/:id', component:DetailsComponent  },
-            { path: 'allorders', component:AllordersComponent  },
-            { path: 'orders/:id', component:OrdersComponent  },
+            { path: 'products', loadComponent:()=>import('./components/product/product.component').then(p=> p.ProductComponent) },
+            { path: 'cart', loadComponent:()=>import('./components/cart/cart.component').then(c=> c.CartComponent) },
+            { path: 'brands', loadComponent:()=>import('./components/brands/brands.component').then(b=> b.BrandsComponent) },
+            { path: 'cart', loadComponent:()=>import('./components/cart/cart.component').then(c=> c.CartComponent) },
+            { path: 'brands', loadComponent:()=>import('./components/brands/brands.component').then(b=> b.BrandsComponent) },
+            { path: 'categories', loadComponent:()=>import('./components/categories/categories.component').then(c=> c.CategoriesComponent) },
+            { path: 'details/:id', loadComponent:()=>import('./components/detail/details.component').then(d=> d.DetailsComponent) },
+            { path: 'allorders', loadComponent:()=>import('./components/allorders/allorders.component').then(a=> a.AllordersComponent) },
+            { path: 'orders/:id', loadComponent:()=>import('./components/orders/orders.component').then(o=> o.OrdersComponent) },
         ]
     },
     {path:'**', component:NotfoundComponent}

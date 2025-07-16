@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, computed, inject, OnInit, Signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -17,17 +17,20 @@ export class NavBlankComponent implements OnInit {
   readonly _translateService = inject(TranslateService);
   private readonly _mytranslateService = inject(MytranslateService);
   private readonly _cartService = inject(CartService);
-  countNumber:number = 0;
+  countNumber: Signal<number> = computed(() => this._cartService.cartNumber());
 
    ngOnInit(): void {
-    this._cartService.cartNumber.subscribe({
-      next: (count) => {
-        this.countNumber = count;
+    this._cartService.getProductCart().subscribe({
+      next: (response) => {
+        console.log('Cart items:', response.data);
+        this._cartService.cartNumber.set(response.numOfCartItems);
       },
       error: (err) => {
-        console.error('Error fetching cart number:', err);
+        console.error('Error fetching cart items:', err);
       }
     });
+
+
   }
   changeLanguage(lang: string):void {
     this._mytranslateService.changeLang(lang);

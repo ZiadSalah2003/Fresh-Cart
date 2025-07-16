@@ -107,7 +107,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       next: (response) => {
         console.log('Product added to cart:', response);
         this._toastrService.success(response.message, 'Success');
-        this._cartService.cartNumber.next(response.numbOfCartItems);
+        this._cartService.cartNumber.set(response.numbOfCartItems);
       },
       error: (err) => {
         console.error('Error adding product to cart:', err);
